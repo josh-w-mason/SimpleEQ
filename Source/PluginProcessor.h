@@ -22,7 +22,7 @@ struct ChainSettings
 
 {
     float peakFreq{ 0 }, peakGainInDecibels{ 0 }, peakQuality{ 1.f };
-    float lowCutFreq { 0 }, highCutFreq{ 0 };
+    float lowCutFreq { 0 }, highCutFreq { 0 };
 
     Slope lowCutSlope{ Slope::Slope_12 }, highCutSlope{ Slope::Slope_12 };
 };
@@ -32,10 +32,10 @@ ChainSettings getChainSettings(juce::AudioProcessorValueTreeState& apvts);
 //==============================================================================
 /**
 */
-class SimpleEQAudioProcessor  : public juce::AudioProcessor
-                            #if JucePlugin_Enable_ARA
-                             , public juce::AudioProcessorARAExtension
-                            #endif
+class SimpleEQAudioProcessor : public juce::AudioProcessor
+#if JucePlugin_Enable_ARA
+    , public juce::AudioProcessorARAExtension
+#endif
 {
 public:
     //==============================================================================
@@ -43,14 +43,14 @@ public:
     ~SimpleEQAudioProcessor() override;
 
     //==============================================================================
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override;
+    void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
-   #ifndef JucePlugin_PreferredChannelConfigurations
-    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-   #endif
+#ifndef JucePlugin_PreferredChannelConfigurations
+    bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
+#endif
 
-    void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
+    void processBlock(juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
     //==============================================================================
     juce::AudioProcessorEditor* createEditor() override;
@@ -67,16 +67,16 @@ public:
     //==============================================================================
     int getNumPrograms() override;
     int getCurrentProgram() override;
-    void setCurrentProgram (int index) override;
-    const juce::String getProgramName (int index) override;
-    void changeProgramName (int index, const juce::String& newName) override;
+    void setCurrentProgram(int index) override;
+    const juce::String getProgramName(int index) override;
+    void changeProgramName(int index, const juce::String& newName) override;
 
     //==============================================================================
-    void getStateInformation (juce::MemoryBlock& destData) override;
-    void setStateInformation (const void* data, int sizeInBytes) override;
+    void getStateInformation(juce::MemoryBlock& destData) override;
+    void setStateInformation(const void* data, int sizeInBytes) override;
 
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
-    juce::AudioProcessorValueTreeState apvts {*this, nullptr, "Parameters", createParameterLayout()};
+    juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout() };
 
 private:
     using Filter = juce::dsp::IIR::Filter<float>;
@@ -96,6 +96,7 @@ private:
 
     void updatePeakFilter(const ChainSettings& chainSettings);
     using Coefficients = Filter::CoefficientsPtr;
+
     static void updateCoefficients(Coefficients& old, const Coefficients& replacements);
 
     template<int Index, typename ChainType, typename CoefficientType>
@@ -106,80 +107,41 @@ private:
     }
 
     template<typename ChainType, typename CoefficientType>
-    void updateCutFilter(ChainType& leftLowCut, const CoefficientType& cutCoefficients,
-        /*const ChainSettings& chainSettings)*/
-        const Slope& lowCutSlope)
+    void updateCutFilter(ChainType& chain, const CoefficientType& coefficients, const Slope& slope)
     {
-        /*      auto cutCoefficients = juce::dsp::FilterDesign<float>::designIIRHighpassHighOrderButterworthMethod(chainSettings.lowCutFreq, getSampleRate(), 2 * (chainSettings.lowCutSlope + 1));
 
-              auto& leftLowCut = leftChain.get<ChainPositions::LowCut>();*/
-
-        leftLowCut.setBypassed<0>(true);
-        leftLowCut.setBypassed<1>(true);
-        leftLowCut.setBypassed<2>(true);
-        leftLowCut.setBypassed<3>(true);
-
-        /*      switch (chainSettings.lowCutSlope)*/
+        chain.template setBypassed<0>(true);
+        chain.template setBypassed<1>(true);
+        chain.template setBypassed<2>(true);
+        chain.template setBypassed<3>(true);
 
 
-        switch (lowCutSlope)
+        switch (slope)
         {
-
         case Slope_48:
         {
-            update<3>(leftLowCut, cutCoefficients);
+            update<3>(chain, coefficients);
+           
         }
         case Slope_36:
         {
-            update<2>(leftLowCut, cutCoefficients);
+            update<2>(chain, coefficients);
+            
         }
         case Slope_24:
         {
-            update<1>(leftLowCut, cutCoefficients);
+            update<1>(chain, coefficients);
+         
         }
         case Slope_12:
         {
-            update<0>(leftLowCut, cutCoefficients);
+            update<0>(chain, coefficients);
+          
         }
-        /* case Slope_12:
-         {
-             *leftLowCut.get<0>().coefficients = *cutCoefficients[0];
-             leftLowCut.setBypassed<0>(false);
-             break;
-         }
-         case Slope_24:
-         {
-             *leftLowCut.get<0>().coefficients = *cutCoefficients[0];
-             leftLowCut.setBypassed<0>(false);
-             *leftLowCut.get<1>().coefficients = *cutCoefficients[1];
-             leftLowCut.setBypassed<1>(false);
-             break;
-         }
-         case Slope_36:
-         {
-             *leftLowCut.get<0>().coefficients = *cutCoefficients[0];
-             leftLowCut.setBypassed<0>(false);
-             *leftLowCut.get<1>().coefficients = *cutCoefficients[1];
-             leftLowCut.setBypassed<1>(false);
-             *leftLowCut.get<2>().coefficients = *cutCoefficients[2];
-             leftLowCut.setBypassed<2>(false);
-             break;
-         }
-         case Slope_48:
-         {
-             *leftLowCut.get<0>().coefficients = *cutCoefficients[0];
-             leftLowCut.setBypassed<0>(false);
-             *leftLowCut.get<1>().coefficients = *cutCoefficients[1];
-             leftLowCut.setBypassed<1>(false);
-             *leftLowCut.get<2>().coefficients = *cutCoefficients[2];
-             leftLowCut.setBypassed<2>(false);
-             *leftLowCut.get<3>().coefficients = *cutCoefficients[3];
-             leftLowCut.setBypassed<3>(false);
-             break;
-         }
-         }*/
+
         }
     }
+
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleEQAudioProcessor)
