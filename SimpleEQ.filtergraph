@@ -61,28 +61,11 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
-  <FILTER uid="5" x="0.49375" y="0.4778225806451613" useARA="0" uiLastX_Normal="231"
-          uiLastY_Normal="225" uiopen_Normal="0">
-    <PLUGIN name="SimpleEQ" format="VST3" category="Fx" manufacturer="yourcompany"
-            version="1.0.0" file="C:\Users\nikil\Repos-windows\SimpleEQ\Builds\VisualStudio2022\x64\Debug\VST3\SimpleEQ.vst3\Contents\x86_64-win\SimpleEQ.vst3"
-            uniqueId="f29ad922" isInstrument="0" fileTime="18a3acab477" infoUpdateTime="18a3e8f9f8f"
-            numInputs="2" numOutputs="2" isShell="0" hasARAExtension="0"
-            uid="e953626c"/>
-    <STATE>191.VMjLgXK....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
-    <LAYOUT>
-      <INPUTS>
-        <BUS index="0" layout="L R"/>
-      </INPUTS>
-      <OUTPUTS>
-        <BUS index="0" layout="L R"/>
-      </OUTPUTS>
-    </LAYOUT>
-  </FILTER>
-  <FILTER uid="6" x="0.48" y="0.2782258064516129" useARA="0" uiLastX_Normal="821"
-          uiLastY_Normal="77" uiopen_Normal="1">
+  <FILTER uid="6" x="0.70125" y="0.1330645161290323" useARA="0" uiLastX_Normal="1015"
+          uiLastY_Normal="235" uiopen_Normal="1">
     <PLUGIN name="vstPlayer" format="VST3" category="Instrument|Synth" manufacturer="yourcompany"
             version="2.3.4" file="C:\Users\nikil\Repos-windows\vstPlayer.vst3"
-            uniqueId="8fdefd46" isInstrument="1" fileTime="18a26001301" infoUpdateTime="18a3e8f9f90"
+            uniqueId="8fdefd46" isInstrument="1" fileTime="18a26001301" infoUpdateTime="18a3ea826e9"
             numInputs="0" numOutputs="0" isShell="0" hasARAExtension="0"
             uid="ee63cfc"/>
     <STATE>738.VMjLgjs....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9PiM43hUMczXWEjKt3hYt3hKt.kKt3hKt3BS5gEcyQjKtPDT0YTR5AkaA4hKtfjYikWTGIlKHYmKD4hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKt3hKAQEZUMTRSgjYC4hKtXWdOMCLFElYXcUV30zUZUGMV8DZDk1R1gjPHsFMwfUcQYkVzMlUOgFUEUkQvHjSncSZOYlcCE1YMczXlQ0UZc0ZFkkdmY0SnY1PLYGRBgDLqYjTqsVLY4VTW8DZTMDS1gjPHY2cVgEM2YkV4EkLSQGLogzcHIDR3UkQhsVQFMFNHIDSn4BZiU2cVM1bUY0SnQTZKYGRBgjcEY0X4UkQYgCRRwDZyLzS1cmUXQycVoUdQ01S2fkUZIWUFgDcEYUXqASZHMzaCcUUMcUV30zQWQ2Zwn0a2YzUMUkLh8VSFckPUYzXxTkUYQWPnEEdEYUXq0zQWYGSCgTRzDiXuEkUYY1MrkkYtTEVuQCaKISQrMFZ2f1S2biPhIWQVQlbqEiX5QyPOUmcVgUdQ01St3hKt3hKt3hKt3hKJUELPUTPqI1aYcEV5UkQQcVTWgkKDAkKBs1QhcVSxHlKDAkKC4BTG4hKt3hKt3hKt3FUUMTUDQEdqw1XmE0UYQTQFM1YAwyKIMzasA2atUlaz4COuX0TTMCTrU2Yo41TzEFck4C.</STATE>
@@ -95,8 +78,25 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
-  <CONNECTION srcFilter="5" srcChannel="0" dstFilter="3" dstChannel="0"/>
-  <CONNECTION srcFilter="5" srcChannel="1" dstFilter="3" dstChannel="1"/>
-  <CONNECTION srcFilter="6" srcChannel="0" dstFilter="5" dstChannel="0"/>
-  <CONNECTION srcFilter="6" srcChannel="1" dstFilter="5" dstChannel="1"/>
+  <FILTER uid="8" x="0.46625" y="0.4375" useARA="0" uiLastX_Normal="142"
+          uiLastY_Normal="252" uiopen_Normal="0">
+    <PLUGIN name="SimpleEQ" format="VST3" category="Fx" manufacturer="yourcompany"
+            version="1.0.0" file="C:\Users\nikil\Repos-windows\SimpleEQ\Builds\VisualStudio2022\x64\Debug\VST3\SimpleEQ.vst3\Contents\x86_64-win\SimpleEQ.vst3"
+            uniqueId="f29ad922" isInstrument="0" fileTime="18a3acab477" infoUpdateTime="18a3ea826e9"
+            numInputs="2" numOutputs="2" isShell="0" hasARAExtension="0"
+            uid="e953626c"/>
+    <STATE>191.VMjLgXK....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="L R"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="L R"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <CONNECTION srcFilter="6" srcChannel="0" dstFilter="8" dstChannel="0"/>
+  <CONNECTION srcFilter="6" srcChannel="1" dstFilter="8" dstChannel="1"/>
+  <CONNECTION srcFilter="8" srcChannel="0" dstFilter="3" dstChannel="0"/>
+  <CONNECTION srcFilter="8" srcChannel="1" dstFilter="3" dstChannel="1"/>
 </FILTERGRAPH>
