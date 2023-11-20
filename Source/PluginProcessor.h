@@ -10,16 +10,35 @@
 
 #include <JuceHeader.h>
 
+
+
 #include <array>
 template<typename T>
 struct Fifo
 {
     void prepare(int numChannels, int numSamples)
     {
+        static_assert(std::is_same_v<T, juce::AudioBuffer<float>>,
+            "prepare(numChannels, numSamples) should only be used when the Fifo is holding juce::AudioBuffer<float>");
         for (auto& buffer : buffers)
         {
-            buffer.setSize(numChannels, numSamples, false, true, true);
+            buffer.setSize(numChannels,
+                numSamples,
+                false,   //clear everything?
+                true,    //including the extra space?
+                true);   //avoid reallocating if you can?
             buffer.clear();
+        }
+    }
+
+    void prepare(size_t numElements)
+    {
+        static_assert(std::is_same_v<T, std::vector<float>>,
+            "prepare(numElements) should only be used when the Fifo is holding std::vector<float>");
+        for (auto& buffer : buffers)
+        {
+            buffer.clear();
+            buffer.resize(numElements, 0);
         }
     }
 
@@ -43,6 +62,7 @@ struct Fifo
             t = buffers[read.startIndex1];
             return true;
         }
+
         return false;
     }
 
@@ -58,8 +78,8 @@ private:
 
 enum Channel
 {
-Right,
-Left
+    Right, //effectively 0
+    Left //effectively 1
 };
 
 template<typename BlockType>
@@ -87,21 +107,20 @@ struct SingleChannelSampleFifo
         prepared.set(false);
         size.set(bufferSize);
 
-        bufferToFill.setSize(1,
-            bufferSize,
-            false,
-            true,
-            true);
-
+        bufferToFill.setSize(1,             //channel
+            bufferSize,    //num samples
+            false,         //keepExistingContent
+            true,          //clear extra space
+            true);         //avoid reallocating
         audioBufferFifo.prepare(1, bufferSize);
         fifoIndex = 0;
-        prepared.set(true);               
+        prepared.set(true);
     }
-    //=======================================================================================================
-    int getNumCompletedBuffersAvailable() const { return audioBufferFifo.getNumAvailableForReading();
+    //==============================================================================
+    int getNumCompleteBuffersAvailable() const { return audioBufferFifo.getNumAvailableForReading(); }
     bool isPrepared() const { return prepared.get(); }
-    int getSize() const { return size.get(): }
-    //========================================================================================================
+    int getSize() const { return size.get(); }
+    //==============================================================================
     bool getAudioBuffer(BlockType& buf) { return audioBufferFifo.pull(buf); }
 private:
     Channel channelToUse;
@@ -121,8 +140,9 @@ private:
 
             fifoIndex = 0;
         }
+
         bufferToFill.setSample(0, fifoIndex, sample);
-        ++fifoIndex
+        ++fifoIndex;
     }
 };
 
@@ -268,17 +288,17 @@ public:
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     juce::AudioProcessorValueTreeState apvts{ *this, nullptr, "Parameters", createParameterLayout() };
 
+    using BlockType = juce::AudioBuffer<float>;
+    SingleChannelSampleFifo<BlockType> leftChannelFifo { Channel::Left };
+    SingleChannelSampleFifo<BlockType> rightChannelFifo { Channel::Right };
+
+
 private:
 
 
     MonoChain leftChain, rightChain;
 
-
-
     void updatePeakFilter(const ChainSettings& chainSettings);
-
-
-   
 
     void updateLowCutFilters(const ChainSettings& chainSettings);
     void updateHighCutFilters(const ChainSettings& chainSettings);
